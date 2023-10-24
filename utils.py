@@ -33,13 +33,13 @@ class Plotter:
             plt.ylim(-self.vy, self.vy)
 
             if self.mode == 'Full dataset':
-                plt.scatter(self.dataset.x, self.dataset.y)
+                plt.scatter(self.dataset.x, self.dataset.y, color='#DA702C')
 
             elif self.mode == 'Subsampled dataset':
-                plt.scatter(self.dataset.xsmp, self.dataset.ysmp)
+                plt.scatter(self.dataset.xsmp, self.dataset.ysmp, color='#DA702C')
 
                 xx = np.linspace(-self.vx, self.vx, 100)
-                plt.plot(xx, self.forward(self.params, xx))
+                plt.plot(xx, self.forward(self.params, xx), color='#4385BE')
 
                 title = list()
                 if 'Loss' in self.title:
@@ -69,8 +69,8 @@ class Plotter:
                             color='lightgrey', alpha=0.5)
 
                 xx = np.linspace(-self.vx, self.vx, 100)
-                plt.plot(xx, self.forward(self.params, xx))
-                plt.plot(xx, self.forward(self.dataset.gt, xx))
+                plt.plot(xx, self.forward(self.dataset.gt, xx), color='#DA702C')
+                plt.plot(xx, self.forward(self.params, xx), color='#4385BE')
             else:
                 raise ValueError
 
@@ -193,8 +193,8 @@ class Dataset:
         return
 
 
-def make_dataset(params, forward, eps=0.75):
-    xx = jnp.array(4 * np.random.rand(100) - 2)
+def make_dataset(params, forward, n=100, eps=0.75):
+    xx = jnp.array(4 * np.random.rand(n) - 2)
     yy = forward(params, xx) + eps * jnp.array(np.random.randn(len(xx)))
     dataset = Dataset(xx, yy, dict(params.items()))
     return dataset
